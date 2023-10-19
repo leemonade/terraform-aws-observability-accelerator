@@ -87,36 +87,6 @@ variable "enable_dashboards" {
   default     = true
 }
 
-variable "flux_kustomization_name" {
-  description = "Flux Kustomization name"
-  type        = string
-  default     = "grafana-dashboards-infrastructure"
-}
-
-variable "flux_gitrepository_name" {
-  description = "Flux GitRepository name"
-  type        = string
-  default     = "aws-observability-accelerator"
-}
-
-variable "flux_gitrepository_url" {
-  description = "Flux GitRepository URL"
-  type        = string
-  default     = "https://github.com/aws-observability/aws-observability-accelerator"
-}
-
-variable "flux_gitrepository_branch" {
-  description = "Flux GitRepository Branch"
-  type        = string
-  default     = "v0.2.0"
-}
-
-variable "flux_kustomization_path" {
-  description = "Flux Kustomization Path"
-  type        = string
-  default     = "./artifacts/grafana-operator-manifests/eks/infrastructure"
-}
-
 variable "enable_kube_state_metrics" {
   description = "Enables or disables Kube State metrics exporter. Disabling this might affect some data in the dashboards"
   type        = bool
@@ -396,38 +366,6 @@ variable "logs_config" {
   }
 }
 
-variable "enable_fluxcd" {
-  description = "Enables or disables FluxCD. Disabling this might affect some data in the dashboards"
-  type        = bool
-  default     = true
-}
-
-variable "flux_config" {
-  description = "FluxCD configuration"
-  type = object({
-    create_namespace   = bool
-    k8s_namespace      = string
-    helm_chart_name    = string
-    helm_chart_version = string
-    helm_release_name  = string
-    helm_repo_url      = string
-    helm_settings      = map(string)
-    helm_values        = map(any)
-  })
-
-  default = {
-    create_namespace   = true
-    helm_chart_name    = "flux2"
-    helm_chart_version = "2.7.0"
-    helm_release_name  = "observability-fluxcd-addon"
-    helm_repo_url      = "https://fluxcd-community.github.io/helm-charts"
-    helm_settings      = {}
-    helm_values        = {}
-    k8s_namespace      = "flux-system"
-  }
-  nullable = false
-}
-
 variable "enable_grafana_operator" {
   description = "Deploys Grafana Operator to EKS Cluster"
   type        = bool
@@ -470,6 +408,12 @@ variable "grafana_api_key" {
 
 variable "grafana_url" {
   description = "Endpoint URL of Amazon Managed Grafana workspace. Required if `enable_grafana_operator = true`"
+  type        = string
+  default     = ""
+}
+
+variable "grafana_folder_id" {
+  description = "Grafana folder id to save the dashboards"
   type        = string
   default     = ""
 }
